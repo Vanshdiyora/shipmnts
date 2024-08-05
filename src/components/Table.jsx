@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import StringFilter from './StringFilter'
 
 function Table() {
   // const [data,setData]=useState([])
@@ -199,6 +198,8 @@ function Table() {
       lastLogin: "2024-07-29T09:33:00.000Z",
       accessLevel: "Admin"
     }]
+  const [sort,setSort]=useState('')
+
   const [filters, setFilter] = useState({
     name: { options: '', value: '' },
     role:'',
@@ -218,7 +219,7 @@ function Table() {
     accessLevel: 'enum'
   }
   const applyFilter = (data) => {
-    return data.filter(item => {
+    let filterdata=data.filter(item => {
       const name = item.name || '';
       const { options, value } = filters.name;
       switch (options) {
@@ -245,7 +246,18 @@ function Table() {
       const {role}=filters
       if(!role)return true;
         return item.role===role;
-    });
+    })
+    if(sort!=''){
+
+      
+      if(sort=='asc'){
+        filterdata.sort((x,y)=>x.salary-y.salary)
+      }
+      else{
+        filterdata.sort((x,y)=>y.salary-x.salary)
+      }
+    }
+    return filterdata
   }
 
  
@@ -260,7 +272,7 @@ function Table() {
     //     setData(data)
     // })
     setData(applyFilter(data))
-  }, [filters])
+  }, [filters,sort])
 
   const [filterData, setData] = useState(data)
   const [selectName, setSelectName] = useState('contains')
@@ -276,6 +288,13 @@ function Table() {
   const handleRole=(e)=>{
     setFilter((prev)=>({...prev,role:e.target.value}))
   }
+  const handleSortA=()=>{
+    setSort('asc')
+  }
+  const handleSortD=()=>{
+    setSort('des')
+  }
+
   const [role,setRole]=useState()
   return (
     <>
@@ -308,7 +327,11 @@ function Table() {
 
 
         </select>
-      </label>
+      </label> <br />
+      salary sorting:
+      <button onClick={handleSortA}>ascending</button>
+      <button onClick={handleSortD}>descending</button>
+
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <th>Id</th><th>Name</th>
