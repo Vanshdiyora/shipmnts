@@ -11,4 +11,5 @@ Currently, two official plugins are available:
 run the commands
 
 npm i
+
 npm run dev
