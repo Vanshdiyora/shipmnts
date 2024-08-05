@@ -199,6 +199,7 @@ function Table() {
       accessLevel: "Admin"
     }]
   const [sort,setSort]=useState('')
+  const [sortN,setSortN]=useState('')
 
   const [filters, setFilter] = useState({
     name: { options: '', value: '' },
@@ -257,6 +258,18 @@ function Table() {
         filterdata.sort((x,y)=>y.salary-x.salary)
       }
     }
+
+    if(sortN!=''){
+
+      
+      if(sortN=='asc'){
+        filterdata.sort((x,y)=>x.name.localeCompare(y.name))
+      }
+      else{
+        filterdata.sort((x,y)=>y.name.localeCompare(x.name))
+      }
+    }
+
     return filterdata
   }
 
@@ -272,8 +285,8 @@ function Table() {
     //     setData(data)
     // })
     setData(applyFilter(data))
-  }, [filters,sort])
-
+  }, [filters,sort,sortN])
+console.log(sortN)
   const [filterData, setData] = useState(data)
   const [selectName, setSelectName] = useState('contains')
   const handleInput = (e) => {
@@ -294,6 +307,13 @@ function Table() {
   const handleSortD=()=>{
     setSort('des')
   }
+  const handleSortAN=()=>{
+    setSortN('asc')
+  }
+  const handleSortDN=()=>{
+    setSortN('des')
+  }
+
 
   const [role,setRole]=useState()
   return (
@@ -331,7 +351,10 @@ function Table() {
       salary sorting:
       <button onClick={handleSortA}>ascending</button>
       <button onClick={handleSortD}>descending</button>
-
+      <br />
+      Name sorting:
+      <button onClick={handleSortAN}>ascending</button>
+      <button onClick={handleSortDN}>descending</button>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <th>Id</th><th>Name</th>
